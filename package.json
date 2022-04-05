@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "clock:in": "node --in",
+    "clock:out": "node --out"
+  },
   "dependencies": {
     "dotenv": "^16.0.0",
     "puppeteer": "^13.5.2",

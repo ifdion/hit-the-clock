@@ -1,11 +1,18 @@
 require('dotenv').config()
-const yargs = require('yargs/yargs')
 const puppeteer = require('puppeteer');
+const yargs = require('yargs');
 const { hideBin } = require('yargs/helpers')
-const argv = yargs(hideBin(process.argv)).argv
+yargs(hideBin(process.argv))
+    .command({
+        command:'out',
+        describe:'Clock out'
+    })
+    .parse();
+const { argv } = yargs;
+
 
 (async () => {
-    const mode = (argv.out || argv.clockout || argv.clockOut) ? 'clockOut' : 'clockIn';
+    const mode = argv.out ? 'clockOut' : 'clockIn';
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     const context = browser.defaultBrowserContext();
@@ -27,7 +34,7 @@ const argv = yargs(hideBin(process.argv)).argv
         await page.goto(process.env.MACHINE_PATH, {
             waitUntil: 'networkidle0'
         });
-        await page.setGeolocation({ latitude: -6.9201464, longitude: 107.6816268 });
+        await page.setGeolocation({ latitude: parseFloat(process.env.LATITUDE), longitude: parseFloat(process.env.LONGITUDE) });
         await Promise.all([
             page.waitForNavigation({ waitUntil: 'networkidle0' }),
             page.click('[href="/live-attendance"]'),
