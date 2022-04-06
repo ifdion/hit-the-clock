@@ -51,7 +51,7 @@ const { argv } = yargs;
         await browser.close();
 
         axios.post(process.env.SLACK_WEBHOOK_URL, {
-            text: `Congratulation, <${process.env.SLACK_HANDLE}> ! You just ${mode === 'clockIn' ? 'clocked in' : 'clocked out'}. Lets do some serious code! Check manually here ${process.env.MACHINE_PATH}.`
+            text: `Congratulation, <${process.env.SLACK_HANDLE}> ! You just ${mode === 'clockIn' ? 'clocked in. Lets do some serious code!' : 'clocked out. Job well done!'} Check manually here ${process.env.MACHINE_PATH}.`
         })
 
         console.log({ status: 'success' });
