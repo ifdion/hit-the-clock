@@ -1,6 +1,7 @@
 require('dotenv').config()
 const puppeteer = require('puppeteer');
 const yargs = require('yargs');
+const axios = require('axios').default;
 const { hideBin } = require('yargs/helpers')
 yargs(hideBin(process.argv))
     .command({
@@ -49,11 +50,24 @@ const { argv } = yargs;
         await page.goto(process.env.LOGOUT_PATH);
         await browser.close();
 
-        console.log({ status: 'success' });
+        axios.post(process.env.SLACK_WEBHOOK_URL, {
+            text: `Congratulation, <${process.env.SLACK_HANDLE}> ! You just ${mode === 'clockIn' ? 'clocked in' : 'clocked out'}. Lets do some serious code! Check manually here ${process.env.MACHINE_PATH}.`
+        })
 
+        console.log({ status: 'success' });
     } catch (error) {
         await page.goto(process.env.LOGOUT_PATH);
         await browser.close();
+
+        axios.post(process.env.SLACK_WEBHOOK_URL, {
+            text: `Uh oh! Something went wrong <${process.env.SLACK_HANDLE}!> You need to ${mode === 'clockIn' ? 'clocked in' : 'clocked out'} manually here ${process.env.MACHINE_PATH}.`,
+            attachments: [
+                {
+                    color: '#93254F',
+                    text: error.message || JSON.stringify(error)
+                }
+            ]
+        })
 
         console.debug(error);
     }
