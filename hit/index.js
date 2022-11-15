@@ -53,6 +53,8 @@ function log(message) {
 
         const coordinate = (day > 1 && day < 5 ? process.env.COORDINATE_WFO : process.env.COORDINATE_WFH).split(',');
 
+        log(`current day is ${day}, setting to ${day > 1 && day < 5 ? 'wfo' : 'wfh'}`);
+
         await page.setGeolocation({ latitude: parseFloat(coordinate[0]), longitude: parseFloat(coordinate[1]) });
 
         log('go to live attendance');
@@ -60,7 +62,7 @@ function log(message) {
         await page.click('[href="/live-attendance"]'),
         await page.waitForSelector('.d-flex.justify-content-between.mb-3')
 
-        log('click clock in / clock out button');
+        log('click button');
 
         if (mode === 'clockIn') {
             await page.mouse.click(400, 540)
