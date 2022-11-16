@@ -107,7 +107,7 @@ function log(message) {
                 },
                 {
                     color: '#93254F',
-                    text: JSON.stringify(log)
+                    text: JSON.stringify(mainLog)
                 }
             ]
         })
