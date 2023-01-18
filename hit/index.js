@@ -9,16 +9,18 @@ yargs(hideBin(process.argv))
         describe:'Clock out'
     })
     .parse();
-const { argv } = yargs;
 
+const { argv } = yargs;
 const mainLog = [];
+let retry = 0;
+
 function log(message) {
     const now = new Date();
     mainLog.push(`${message} : ${now.toUTCString()} `);
     console.log({ status: message});
 }
 
-(async () => {
+async function hit () {
     const now = new Date();
     
     const day = now.getDay();
@@ -98,18 +100,25 @@ function log(message) {
         await page.goto(process.env.LOGOUT_PATH);
         await browser.close();
 
-        axios.post(process.env.SLACK_WEBHOOK_URL, {
-            text: `Uh oh! Something went wrong <${process.env.SLACK_HANDLE}!> You need to ${mode === 'clockIn' ? 'clocked in' : 'clocked out'} manually here ${process.env.MACHINE_PATH}.`,
-            attachments: [
-                {
-                    color: '#93254F',
-                    text: error.message?  error.message : JSON.stringify(error)
-                },
-                {
-                    color: '#93254F',
-                    text: JSON.stringify(mainLog)
-                }
-            ]
-        })
+        if (retry < 5) {
+            hit();
+
+        } else {
+            axios.post(process.env.SLACK_WEBHOOK_URL, {
+                text: `(Retry: ${retry})Uh oh! Something went wrong <${process.env.SLACK_HANDLE}!> You need to ${mode === 'clockIn' ? 'clocked in' : 'clocked out'} manually here ${process.env.MACHINE_PATH}.`,
+                attachments: [
+                    {
+                        color: '#93254F',
+                        text: error.message?  error.message : JSON.stringify(error)
+                    },
+                    {
+                        color: '#93254F',
+                        text: JSON.stringify(mainLog)
+                    }
+                ]
+            })
+        }
     }
-})();
+};
+
+hit();
