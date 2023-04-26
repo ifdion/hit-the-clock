@@ -14,6 +14,8 @@ const { argv } = yargs;
 const mainLog = [];
 let retry = 0;
 
+process.env.TZ = "Asia/Jakarta";
+
 function log(message) {
   const now = new Date();
   mainLog.push(`${message} : ${now.toUTCString()} `);
@@ -83,6 +85,8 @@ async function hit() {
     await page.waitForSelector(".d-flex.justify-content-between.mb-3");
 
     log("click button");
+
+    log(`current hour is ${hour}, setting to ${mode}`);
 
     if (mode === "clockIn") {
       await page.mouse.click(400, 540);
