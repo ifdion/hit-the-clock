@@ -25,7 +25,7 @@ async function hit() {
 
   const day = now.getDay();
   const hour = now.getHours();
-  const mode = hour < 12 ? "clockIn" : "clockOut";
+  const mode = hour < 15 ? "clockIn" : "clockOut";
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   const context = browser.defaultBrowserContext();
