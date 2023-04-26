@@ -100,7 +100,7 @@ async function hit() {
 
     log("send notification");
 
-    axios.post(process.env.SLACK_WEBHOOK_URL, {
+    await axios.post(process.env.SLACK_WEBHOOK_URL, {
       text: `Congratulation, <${process.env.SLACK_HANDLE}> ! You just ${
         mode === "clockIn" ? "clocked in" : "clocked out"
       }. Lets do some serious code! Check manually here ${
@@ -128,7 +128,7 @@ async function hit() {
     if (retry < 5) {
       hit();
     } else {
-      axios.post(process.env.SLACK_WEBHOOK_URL, {
+      await axios.post(process.env.SLACK_WEBHOOK_URL, {
         text: `(Retry: ${retry})Uh oh! Something went wrong <${
           process.env.SLACK_HANDLE
         }!> You need to ${
