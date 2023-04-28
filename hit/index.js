@@ -109,8 +109,7 @@ async function hit() {
         mode === "clockIn" ? "clocked in" : "clocked out"
       }. Lets do some serious code! Check manually here ${
         process.env.MACHINE_PATH
-      }.
-      ${process.env.IMAGES_URL}/talenta-3.png
+      }. ${process.env.IMAGES_URL}/talenta-3.png?date=${Date.now()}
       `,
       unfurl_links: true,
       attachments: [
@@ -140,9 +139,9 @@ async function hit() {
           process.env.SLACK_HANDLE
         }!> You need to ${
           mode === "clockIn" ? "clocked in" : "clocked out"
-        } manually here ${process.env.MACHINE_PATH}.
-        
-        ${process.env.IMAGES_URL}/talenta-9.png
+        } manually here ${process.env.MACHINE_PATH}. ${
+          process.env.IMAGES_URL
+        }/talenta-9.png?date=${Date.now()}
         `,
         unfurl_links: true,
         attachments: [
