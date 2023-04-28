@@ -47,20 +47,20 @@ async function hit() {
 
     await page.goto(process.env.AUTH_PATH);
 
-    await page.screenshot({ path: "talenta-0.png" });
+    await page.screenshot({ path: "images/talenta-0.png" });
 
     await page.type("#user_email", process.env.EMAIL);
     await page.type("#user_password", process.env.PASSWORD);
     await page.click("#new-signin-button");
 
-    await page.screenshot({ path: "talenta-1.png" });
+    await page.screenshot({ path: "images/talenta-1.png" });
 
     await page.waitForNavigation({ waitUntil: "networkidle0" });
     await page.goto(process.env.MACHINE_PATH, {
       waitUntil: "networkidle0",
     });
 
-    await page.screenshot({ path: "talenta-2.png" });
+    await page.screenshot({ path: "images/talenta-2.png" });
 
     log("set up geolocation");
 
@@ -95,7 +95,7 @@ async function hit() {
     }
 
     await page.waitForTimeout(5000);
-    await page.screenshot({ path: "talenta-3.png" });
+    await page.screenshot({ path: "images/talenta-3.png" });
 
     log("logging out of talenta");
 
@@ -109,7 +109,10 @@ async function hit() {
         mode === "clockIn" ? "clocked in" : "clocked out"
       }. Lets do some serious code! Check manually here ${
         process.env.MACHINE_PATH
-      }.`,
+      }.
+      ${process.env.IMAGES_URL}/talenta-3.png
+      `,
+      unfurl_links: true,
       attachments: [
         {
           color: "#557D23",
@@ -124,7 +127,7 @@ async function hit() {
     log("error catch");
     console.error({ status: "error", mainLog });
 
-    await page.screenshot({ path: "talenta-9.png" });
+    await page.screenshot({ path: "images/talenta-9.png" });
 
     await page.goto(process.env.LOGOUT_PATH);
     await browser.close();
@@ -137,7 +140,11 @@ async function hit() {
           process.env.SLACK_HANDLE
         }!> You need to ${
           mode === "clockIn" ? "clocked in" : "clocked out"
-        } manually here ${process.env.MACHINE_PATH}.`,
+        } manually here ${process.env.MACHINE_PATH}.
+        
+        ${process.env.IMAGES_URL}/talenta-9.png
+        `,
+        unfurl_links: true,
         attachments: [
           {
             color: "#93254F",
