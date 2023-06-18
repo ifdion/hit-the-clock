@@ -27,10 +27,20 @@ async function hit() {
 
   const day = now.getDay();
   const hour = now.getHours();
+  const month = now.getMonth();
+  const date = now.getDate();
   const mode = hour < 15 ? "clockIn" : "clockOut";
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   const context = browser.defaultBrowserContext();
+
+  const clockData = await axios.get(process.env.API_SPREADSHEET);
+  const monthData = clockData.data.data.find((x) => x.date === date);
+  const dayData = monthData[(month + 1).toString()]
+
+  if (dayData === 'leave') {
+    process.exit(0);
+  }
 
   log("setting up browser");
 
@@ -158,6 +168,7 @@ async function hit() {
       process.exit(0);
     }
   }
+  process.exit(0);
 }
 
 hit();
